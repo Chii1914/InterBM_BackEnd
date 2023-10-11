@@ -1,5 +1,6 @@
 import mysql2 from 'mysql2/promise';
 import connectionConfig from '../database/connection.js';
+import bcrypt from "bcryptjs"
 
 /**
  * The function creates a connection to a MySQL database using the provided configuration.
@@ -21,13 +22,21 @@ const createConnection = async ( ) => {
  */
 const crearUsuario = async (req, res) => {
     try {
-
-        const usuario = req.body; //en el cuerpo de la solicitud vamos a enviar data  'POST PUT'
-        // const filters = req.query; //?query1=valorquery1&query2=valorquery2
+        //const usuario = req.body; //en el cuerpo de la solicitud vamos a enviar data  'POST PUT'
+        // -const filters = req.query; //?query1=valorquery1&query2=valorquery2
         // const parametros = req.params; // /create/:parametro
-
         const connection = await createConnection();
-        await connection.execute('INSERT INTO Usuarios (nombre, correo) VALUES (?, ?)', [usuario.nombre, usuario.correo]);
+        const q = 'SELECT * FROM usuario where RUN = ?'
+        console.log(req.body.username + " FLAGGG " + req.body.password)
+        /* 
+        //SI SE DESCOMENTA ESTA WEA QUEDA LA CAGA NO SÉ PORQUEEE
+        await connection.query(q, [req.body.username], (err, data) =>{
+            if(err) return res.json(err)
+            if(data.length) return res.status(409).json("Usuario YA registrado") 
+        })
+        */
+        
+        await connection.execute('INSERT INTO usuario (RUN, password) VALUES (?, ?)', [req.body.username, req.body.password]);
         await connection.end();
        
         // console.log("BODY", usuario);
