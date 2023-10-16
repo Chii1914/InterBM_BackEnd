@@ -45,6 +45,10 @@ import routerUser from './routes/user.js';
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
 specifies that any requests with a URL starting with '/user' should be handled by the `routerUser`
 router. */
+<<<<<<< HEAD
 app.use('/user', routerUser);
+=======
+app.use('/', routerUser);
+>>>>>>> Chii-Branch
 
 export default app
