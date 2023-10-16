@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import mysql2 from "mysql2/promise";
 import connectionConfig from "../database/connection.js";
 import bcrypt from "bcryptjs";
@@ -155,5 +155,3 @@ can be imported and used in other modules. In this case, the `export` statement 
 `getUsuarios` and `crearUsuario` functions from the current module. This allows other modules to
 import and use these functions. */
 export { getUsuarios, crearUsuario, getUsuarioID, actualizarID, deleteID};
-=======
->>>>>>> parent of 938994d (Merge branch 'Chii-Branch')
