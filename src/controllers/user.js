@@ -129,7 +129,7 @@ const actualizarID = async (req, res) => {
     await connection.end();
     return res.status(200).json({
       status: true,
-      message: "Actualizado correctamente"
+      message: "El usuario fue actualizado",
     });
   } catch (error) {
     return res.status(500).json({
