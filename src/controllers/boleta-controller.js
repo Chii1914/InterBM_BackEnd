@@ -82,7 +82,7 @@ const updateDeuda = async (req, res) => {
   try {
     const boleta = req.body;
     const connection = await createConnection();
-    const id_boleta = req.params;
+    const { id_boleta } = req.params;
     await connection.execute(
       "UPDATE boleta SET id_boleta = ?, estado = ?, descripcion = ?, monto = ?, fecha = ? WHERE id_boleta = ?",
       [
