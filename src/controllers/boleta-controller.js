@@ -1,6 +1,5 @@
 import mysql2 from "mysql2/promise";
 import connectionConfig from "../database/connection.js";
-import logger from "../logger.js";
 
 const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
@@ -63,7 +62,6 @@ const getVoucherById = async (req, res) => {
       "SELECT * from boleta WHERE id_boleta = ?",
       [req.params.id_boleta]
     );
-    logger.error("asdasd");
     await connection.end();
 
     return res.status(200).json({
@@ -84,7 +82,7 @@ const updateDeuda = async (req, res) => {
   try {
     const boleta = req.body;
     const connection = await createConnection();
-    const { id_boleta } = req.params;
+    const id_boleta = req.params;
     await connection.execute(
       "UPDATE boleta SET id_boleta = ?, estado = ?, descripcion = ?, monto = ?, fecha = ? WHERE id_boleta = ?",
       [
