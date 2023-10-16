@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
-
+//CREAR EL CRUD PA EVENTOS Y ACTUALIZAR DELETE BIEM 
 /**
  * This JavaScript function creates a user by inserting their name and email into a database table.
  * @param req - The `req` parameter is the request object that contains information about the incoming
