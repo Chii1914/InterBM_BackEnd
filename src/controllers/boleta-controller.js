@@ -5,7 +5,7 @@ const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
 
-const generateBoleta = async (req, res) => {
+const generateVoucher = async (req, res) => {
   try {
     const boleta = req.body;
     const connection = await createConnection();
@@ -78,7 +78,7 @@ const getVoucherById = async (req, res) => {
   }
 };
 
-const updateDeuda = async (req, res) => {
+const updateVoucher = async (req, res) => {
   try {
     const boleta = req.body;
     const connection = await createConnection();
@@ -109,7 +109,7 @@ const updateDeuda = async (req, res) => {
     });
   }
 };
-const deleteDeuda = async (req, res) => {
+const deleteVoucher = async (req, res) => {
   try {
     const connection = await createConnection();
     const { boletabyid } = await connection.execute(
@@ -132,4 +132,10 @@ const deleteDeuda = async (req, res) => {
   }
 };
 
-export { generateBoleta, getVoucher, getVoucherById, updateDeuda, deleteDeuda };
+export {
+  generateVoucher,
+  getVoucher,
+  getVoucherById,
+  updateVoucher,
+  deleteVoucher,
+};

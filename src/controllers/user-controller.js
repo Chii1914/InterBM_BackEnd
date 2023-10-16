@@ -9,17 +9,7 @@ import bcrypt from "bcryptjs";
 const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
-//CREAR EL CRUD PA EVENTOS Y ACTUALIZAR DELETE BIEM
-/**
- * This JavaScript function creates a user by inserting their name and email into a database table.
- * @param req - The `req` parameter is the request object that contains information about the incoming
- * HTTP request. It includes properties such as `body`, `query`, and `params`.
- * @param res - The `res` parameter is the response object that is used to send the response back to
- * the client. It contains methods and properties that allow you to control the response, such as
- * setting the status code, headers, and sending the response body.
- * @returns a JSON response with a status code of 200 and a message indicating that the user has been
- * created successfully.
- */
+
 const crearUsuario = async (req, res) => {
   try {
     const connection = await createConnection();
@@ -53,20 +43,7 @@ const crearUsuario = async (req, res) => {
   }
 };
 
-/**
- * The function `getUsuarios` is an asynchronous function that retrieves all users from a database and
- * returns them as a JSON response.
- * @param req - The `req` parameter is the request object that contains information about the HTTP
- * request made by the client. It includes details such as the request method, headers, query
- * parameters, and body.
- * @param res - The `res` parameter is the response object that is used to send the HTTP response back
- * to the client. It contains methods and properties that allow you to set the response status,
- * headers, and body. In this code snippet, it is used to send the JSON response with the list of users
- * retrieved
- * @returns a response with a status code of 200 and a JSON object containing the success status and
- * the list of users (rows) retrieved from the database.
- */
-const getUsuarios = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const connection = await createConnection();
     const [rows] = await connection.execute("SELECT * from usuario");
@@ -84,7 +61,7 @@ const getUsuarios = async (req, res) => {
   }
 };
 
-const getUsuarioID = async (req, res) => {
+const getUserRun = async (req, res) => {
   try {
     const connection = await createConnection();
     const usuario = req.params;
@@ -106,7 +83,7 @@ const getUsuarioID = async (req, res) => {
   }
 };
 
-const actualizarID = async (req, res) => {
+const updateRun = async (req, res) => {
   try {
     const connection = await createConnection();
     const usuario = req.body;
@@ -140,7 +117,7 @@ const actualizarID = async (req, res) => {
   }
 };
 
-const deleteID = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const connection = await createConnection();
     const usuario = req.params;
@@ -160,8 +137,4 @@ const deleteID = async (req, res) => {
   }
 };
 
-/* The `export` statement is used to export functions, objects, or values from a module so that they
-can be imported and used in other modules. In this case, the `export` statement is exporting the
-`getUsuarios` and `crearUsuario` functions from the current module. This allows other modules to
-import and use these functions. */
-export { getUsuarios, crearUsuario, getUsuarioID, actualizarID, deleteID };
+export { getUsers, crearUsuario, getUserRun, updateRun, deleteUser };

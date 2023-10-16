@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 
 //ENDPOINTs
-import routerUser from "./routes/user.js";
+import routerUser from "./routes/user-routes.js";
 import routerBoleta from "./routes/boleta-routes.js";
 
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
