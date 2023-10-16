@@ -123,13 +123,13 @@ const actualizarID = async (req, res) => {
         usuario.categoria,
         usuario.telefono,
         hashedPassword,
-        RUN,
+        RUN.RUN,
       ]
     );
     await connection.end();
     return res.status(200).json({
       status: true,
-      usuarios: rows,
+      message: "Actualizado correctamente"
     });
   } catch (error) {
     return res.status(500).json({
