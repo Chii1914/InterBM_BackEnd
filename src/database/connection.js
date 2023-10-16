@@ -6,11 +6,7 @@ database. It includes the following properties: */
 const connectionConfig = {
     host: values.HOST,
     user: values.USER,
-<<<<<<< HEAD
-    //password: 'Informatica2022.-',
-=======
     password: '',
->>>>>>> Chii-Branch
     database: values.DATABASE
 };
 /* The code is creating a connection to a MySQL database using the `mysql2` library. */
