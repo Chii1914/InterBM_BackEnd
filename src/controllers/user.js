@@ -106,7 +106,7 @@ const actualizarID = async (req, res) =>{
         const saltRounds = 10
         const hashedPassword = await bcrypt.hash(usuario.password, saltRounds);
         await connection.execute(
-        "UPDATE usuario SET Dirección_completa = ?,, password = ? WHERE RUN = ?",
+        "UPDATE usuario SET Dirección_completa = ?, telefono_emergencia = ?, nombre_completo = ?, rol = ?, categoria = ?, telefono = ?, password = ? WHERE RUN = ?",
         [usuario.Dirección_completa,
         usuario.telefono_emergencia,
         usuario.nombre_completo,
