@@ -17,11 +17,11 @@ const crearUsuario = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(usuario.password, saltRounds);
     await connection.execute(
-      "INSERT INTO usuario (RUN, password, Dirección_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO usuario (RUN, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
         usuario.RUN,
         hashedPassword,
-        usuario.Dirección_completa,
+        usuario.direccion_completa,
         usuario.telefono_emergencia,
         usuario.nombre_completo,
         usuario.rol,
@@ -91,9 +91,9 @@ const updateRun = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(usuario.password, saltRounds);
     await connection.execute(
-      "UPDATE usuario SET Dirección_completa = ?, telefono_emergencia = ?, nombre_completo = ?, rol = ?, categoria = ?, telefono = ?, password = ? WHERE RUN = ?",
+      "UPDATE usuario SET direccion_completa = ?, telefono_emergencia = ?, nombre_completo = ?, rol = ?, categoria = ?, telefono = ?, password = ? WHERE RUN = ?",
       [
-        usuario.Dirección_completa,
+        usuario.direccion_completa,
         usuario.telefono_emergencia,
         usuario.nombre_completo,
         usuario.rol,
