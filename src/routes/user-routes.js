@@ -2,12 +2,14 @@
 defines two routes: */
 import { Router } from "express";
 
+
 import {
   crearUsuario,
   deleteUser,
   getUserRun,
   getUsers,
   updateRun,
+  getCategories,
 } from "../controllers/user-controller.js";
 
 /* `const router = Router();` is creating a new router object using the `Router` class from the
@@ -19,5 +21,6 @@ router.route("/user/").get(getUsers);
 router.route("/user/:RUN").get(getUserRun);
 router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
+router.route('/usercat/:categorias').get(getCategories);
 
 export default router;
