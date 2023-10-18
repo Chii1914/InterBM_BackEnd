@@ -84,9 +84,8 @@ const updateVoucher = async (req, res) => {
     const connection = await createConnection();
     const { id_boleta } = req.params;
     await connection.execute(
-      "UPDATE boleta SET id_boleta = ?, estado = ?, descripcion = ?, monto = ?, fecha = ? WHERE id_boleta = ?",
+      "UPDATE boleta SET estado = ?, descripcion = ?, monto = ?, fecha = ? WHERE id_boleta = ?",
       [
-        boleta.id_boleta,
         boleta.estado,
         boleta.descripcion,
         boleta.monto,
@@ -98,13 +97,13 @@ const updateVoucher = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      message: "Usuario actualizado correctamente",
+      message: "Boleta actualizada correctamente",
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       status: false,
-      error: "Problemas al actualizar el usuario",
+      error: "Problemas al actualizar la boleta",
       code: error,
     });
   }
