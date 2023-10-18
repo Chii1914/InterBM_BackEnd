@@ -135,6 +135,34 @@ const deleteUser = async (req, res) => {
       code: error,
     });
   }
+}
+
+  const getCategories = async (req, res) => {
+    try {
+      const connection = await createConnection();
+      const categoria = req.params 
+      console.log(categoria)
+      const [users] = await connection.execute("SELECT * FROM usuario WHERE categoria = ?", [categoria]);
+      await connection.end();
+  
+      
+  
+      return res.status(200).json({
+        success: true,
+        categories,
+        users
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: false,
+        error: "Problemas al traer las categorías y usuarios",
+        code: error,
+      });
+    }
 };
 
-export { getUsers, crearUsuario, getUserRun, updateRun, deleteUser };
+
+
+
+export { getUsers, crearUsuario, getUserRun, updateRun, deleteUser, getCategories };
