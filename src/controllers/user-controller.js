@@ -141,7 +141,6 @@ const deleteUser = async (req, res) => {
     try {
       const connection = await createConnection();
       const {categorias} = req.params 
-      console.log(categorias)
       const [rows] = await connection.execute("SELECT * FROM usuario WHERE categoria = ?", [categorias]);
       await connection.end();
     return res.status(200).json({
