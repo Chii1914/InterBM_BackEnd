@@ -21,6 +21,6 @@ router.route("/user/").get(getUsers);
 router.route("/user/:RUN").get(getUserRun);
 router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
-router.route('/user/:categorias').get(getCategories);
+router.route('/usercat/:categorias').get(getCategories);
 
 export default router;

@@ -140,18 +140,14 @@ const deleteUser = async (req, res) => {
   const getCategories = async (req, res) => {
     try {
       const connection = await createConnection();
-      const categoria = req.params 
-      console.log(categoria)
-      const [users] = await connection.execute("SELECT * FROM usuario WHERE categoria = ?", [categoria]);
+      const {categorias} = req.params 
+      console.log(categorias)
+      const [rows] = await connection.execute("SELECT * FROM usuario WHERE categoria = ?", [categorias]);
       await connection.end();
-  
-      
-  
-      return res.status(200).json({
-        success: true,
-        categories,
-        users
-      });
+    return res.status(200).json({
+      status: true,
+      usuarios: rows,
+    });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
