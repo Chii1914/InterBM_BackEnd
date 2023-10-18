@@ -10,6 +10,8 @@ const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
 
+
+//REUNIR POR MIDDLEWARE USUARIO Y CUENTA
 const crearUsuario = async (req, res) => {
   try {
     const connection = await createConnection();
