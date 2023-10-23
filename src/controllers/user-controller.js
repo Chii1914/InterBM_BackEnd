@@ -10,7 +10,6 @@ const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
 
-
 //REUNIR POR MIDDLEWARE USUARIO Y CUENTA
 const crearUsuario = async (req, res) => {
   try {
@@ -137,29 +136,58 @@ const deleteUser = async (req, res) => {
       code: error,
     });
   }
-}
+};
 
-  const getCategories = async (req, res) => {
-    try {
-      const connection = await createConnection();
-      const {categorias} = req.params 
-      const [rows] = await connection.execute("SELECT * FROM usuario WHERE categoria = ?", [categorias]);
-      await connection.end();
+const getCategories = async (req, res) => {
+  try {
+    const connection = await createConnection();
+    const { categorias } = req.params;
+    const [rows] = await connection.execute(
+      "SELECT * FROM usuario WHERE categoria = ?",
+      [categorias]
+    );
+    await connection.end();
     return res.status(200).json({
       status: true,
       usuarios: rows,
     });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        status: false,
-        error: "Problemas al traer las categorías y usuarios",
-        code: error,
-      });
-    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      error: "Problemas al traer las categorías y usuarios",
+      code: error,
+    });
+  }
 };
 
+const getVoucherByUser = async (req, res) => {
+  try {
+    const connection = await createConnection();
+    const usuario = req.params;
+    const [rows] = await connection.execute(
+      "SELECT usuario.*, boleta.* FROM usuario INNER JOIN realizar_pago ON usuario.run = realizar_pago.run INNER JOIN boleta ON realizar_pago.id_boleta = boleta.id_boleta;"
+    );
+    await connection.end();
+    return res.status(200).json({
+      status: true,
+      usuarios: rows,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      error: "Problemas al visualizar usuario o no existe",
+      code: error,
+    });
+  }
+};
 
-
-
-export { getUsers, crearUsuario, getUserRun, updateRun, deleteUser, getCategories };
+export {
+  getUsers,
+  crearUsuario,
+  getUserRun,
+  updateRun,
+  deleteUser,
+  getCategories,
+  getVoucherByUser,
+};
