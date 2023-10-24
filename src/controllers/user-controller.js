@@ -192,7 +192,7 @@ const verifyUser = async (req, res) => {
       [user.RUN]
     );
     if(rows.length === 0){
-      return res.status(500).json({
+      return res.status(200).json({
         status: false,
         message: "Usuario no existente",
       });
@@ -204,6 +204,7 @@ const verifyUser = async (req, res) => {
         status: true,
       });
     }
+    
     return res.status(200).json({
       status: false,
       message: "Contraseña incorrecta",

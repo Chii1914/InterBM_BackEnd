@@ -23,7 +23,7 @@ router.route("/user/:RUN").get(getUserRun);
 router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
 router.route("/usercat/:categorias").get(getCategories);
-router.route("/userver/").get(verifyUser);
+router.route("/userver/").post(verifyUser);
 router.route("/user/:categorias").get(getCategories);
 router.route("/uservoucher/").get(getVoucherByUser);
 
