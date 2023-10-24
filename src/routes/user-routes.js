@@ -10,6 +10,7 @@ import {
   updateRun,
   getCategories,
   getVoucherByUser,
+  verifyUser,
 } from "../controllers/user-controller.js";
 
 /* `const router = Router();` is creating a new router object using the `Router` class from the
@@ -22,6 +23,7 @@ router.route("/user/:RUN").get(getUserRun);
 router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
 router.route("/usercat/:categorias").get(getCategories);
+router.route("/userver/").get(verifyUser);
 router.route("/user/:categorias").get(getCategories);
 router.route("/uservoucher/").get(getVoucherByUser);
 

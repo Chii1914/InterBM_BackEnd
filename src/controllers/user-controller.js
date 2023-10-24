@@ -182,6 +182,41 @@ const getVoucherByUser = async (req, res) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  try {
+    const user = req.body;
+    console.log(user)
+    const connection = await createConnection();
+    const [rows] = await connection.execute(
+      "SELECT password FROM usuario WHERE RUN = ?",
+      [user.RUN]
+    );
+    if(rows.length === 0){
+      return res.status(500).json({
+        status: false,
+        message: "Usuario no existente",
+      });
+    }
+    await connection.end();
+    const result = await bcrypt.compare(user.password, rows[0].password);
+    if (result) {
+      return res.status(200).json({
+        status: true,
+      });
+    }
+    return res.status(200).json({
+      status: false,
+      message: "Contraseña incorrecta",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      error: "Problemas al visualizar usuario o no existe",
+      code: error,
+    });
+  }
+}
+
 export {
   getUsers,
   crearUsuario,
@@ -190,4 +225,5 @@ export {
   deleteUser,
   getCategories,
   getVoucherByUser,
+  verifyUser,
 };
