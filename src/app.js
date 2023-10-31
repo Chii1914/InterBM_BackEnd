@@ -1,42 +1,54 @@
+/* The code you provided is setting up an Express.js server with various middleware and configurations. */
 import cors from "cors";
 import path from "path";
 import morgan from "morgan";
 import express from "express";
-import passport from "passport";
-import session from "express-session";
 
 import value from "./const/const.js";
+//archivo de la confiraciaona de bd
 import "./database/connection.js";
-import authRoutes from "./routes/auth-routes.js"; // Asegúrate de que la ruta sea correcta
-import "./config/passport-setup.js"; // Asegúrate de que la ruta sea correcta
+const app = express(); //crear instancia app
 
-const app = express(); 
-
+/* The `corsOptions` object is a configuration object for the CORS (Cross-Origin Resource Sharing)
+middleware. CORS is a mechanism that allows resources (e.g., fonts, JavaScript, etc.) on a web page
+to be requested from another domain outside the domain from which the resource originated. */
 const corsOptions = {
-  credentials: true,  // Cambié 'credentiasl' por 'credentials'
+  credentiasl: true,
   optionSuccessStatus: 200,
   methods: "GET, PUT, POST, DELETE",
-  origin: "http://localhost:3000",  // Cambia esto a tu URL del frontend en producción
+  origin: "*",
 };
+
+/* The code `app.set('env', value.NODE_ENV)` is setting the environment variable for the Express.js
+application. The value of `value.NODE_ENV` is being assigned to the `env` setting. This is typically
+used to determine the application's behavior based on the environment it is running in, such as
+development, production, or testing. */
 
 app.set("env", value.NODE_ENV);
 app.set("port", value.RUN_PORT);
 
+/* The code `app.use(morgan('dev'))` is setting up the Morgan middleware, which is a logging middleware
+for Express.js. It logs HTTP requests to the console in a development-friendly format. */
 app.use(morgan("dev"));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "500MB" }));
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: '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',  // Cambia 'tu_secreto' por tu clave secreta real
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
+//static folder
 app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 
-// Usar rutas de autenticación
-app.use("/auth", authRoutes);
+//ENDPOINTs
+import routerUser from "./routes/user-routes.js";
+import routerBoleta from "./routes/boleta-routes.js";
+import routerEvento from "./routes/evento-route.js"
+import routerEntrega from "./routes/entrega2-routes.js"
+
+/* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
+specifies that any requests with a URL starting with '/user' should be handled by the `routerUser`
+router. */
+app.use("/", routerUser);
+app.use("/", routerBoleta);
+app.use("/", routerEvento)
+app.use("/", routerEntrega)
 
 export default app;
