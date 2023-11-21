@@ -11,7 +11,7 @@ import {
   getCategories,
   getVoucherByUser,
   verifyUser,
-} from "../controllers/user-controller.js";
+} from "../controllers/Sql/user-controller.js";
 
 /* `const router = Router();` is creating a new router object using the `Router` class from the
 `express` module. This router object will be used to define routes and handle HTTP requests. */
@@ -24,7 +24,6 @@ router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
 router.route("/usercat/:categorias").get(getCategories);
 router.route("/userver/").post(verifyUser);
-router.route("/user/:categorias").get(getCategories);
 router.route("/uservoucher/").get(getVoucherByUser);
 
 export default router;

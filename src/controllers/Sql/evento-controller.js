@@ -1,5 +1,5 @@
 import mysql2 from "mysql2/promise";
-import connectionConfig from "../database/connection.js";
+import connectionConfig from "../../database/connection.js";
 import bcrypt from "bcryptjs";
 
 /**
@@ -11,6 +11,10 @@ const createConnection = async () => {
 };
 
 const crearEvento = async (req, res) => {
+  const type = req.params;
+  if (type.typebd == "mongo") {
+    next();
+  }
   try {
     const connection = await createConnection();
     const evento = req.body;
@@ -39,23 +43,29 @@ const crearEvento = async (req, res) => {
   }
 };
 
-const getEvento = async (req, res) => {
-  try {
-    const connection = await createConnection();
-    const [rows] = await connection.execute("SELECT * from evento");
-    await connection.end();
-    return res.status(200).json({
-      success: true,
-      usuarios: rows,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: false,
-      error: "Problemas al traer el evento",
-      code: error,
-    });
+const getEvento = async (req, res, next) => {
+  if (req.params.typebd == "mongo") {
+    next()
+  } else {
+    try {
+      const connection = await createConnection();
+      const [rows] = await connection.execute("SELECT * from evento");
+      await connection.end();
+      return res.status(200).json({
+        success: true,
+        usuarios: rows,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: false,
+        error: "Problemas al traer el evento",
+        code: error,
+      });
+    }
   }
 };
+
+
 
 const getEventoId = async (req, res) => {
   try {
@@ -114,7 +124,9 @@ const deleteEvento = async (req, res) => {
     const connection = await createConnection();
     const evento = req.params;
     const { id_evento } = evento;
-    await connection.execute("DELETE FROM evento WHERE id_evento = ?", [id_evento]);
+    await connection.execute("DELETE FROM evento WHERE id_evento = ?", [
+      id_evento,
+    ]);
     await connection.end();
     return res.status(200).json({
       status: true,
@@ -129,4 +141,10 @@ const deleteEvento = async (req, res) => {
   }
 };
 
-export { crearEvento ,getEvento, getEventoId, updateEvento, deleteEvento };
+export {
+  crearEvento,
+  getEvento,
+  getEventoId,
+  updateEvento,
+  deleteEvento,
+};

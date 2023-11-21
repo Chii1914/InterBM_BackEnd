@@ -1,5 +1,5 @@
 import mysql2 from "mysql2/promise";
-import connectionConfig from "../database/connection.js";
+import connectionConfig from "../../database/connection.js";
 
 /**
  * The function creates a connection to a MySQL database using the provided configuration.

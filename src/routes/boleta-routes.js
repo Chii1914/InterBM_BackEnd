@@ -5,7 +5,7 @@ import {
   getVoucher,
   getVoucherById,
   updateVoucher,
-} from "../controllers/boleta-controller.js";
+} from "../controllers/Sql/boleta-controller.js";
 const router = Router();
 
 //Siempre hay que anteponer "http://localhost:4000/boletas/" y luego la ruta definida dependiendo de la accion crud.

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { c1 , c2, c3, c4, c5
   
-} from "../controllers/entrega2-controller.js";
+} from "../controllers/Sql/entrega2-controller.js";
 const router = Router();
 
 //Siempre hay que anteponer "http://localhost:4000/boletas/" y luego la ruta definida dependiendo de la accion crud.
