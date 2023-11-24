@@ -7,6 +7,7 @@ import express from "express";
 import value from "./const/const.js";
 //archivo de la confiraciaona de bd
 import "./database/connection.js";
+import "./database/connection-mongoose.js";
 const app = express(); //crear instancia app
 
 /* The `corsOptions` object is a configuration object for the CORS (Cross-Origin Resource Sharing)
