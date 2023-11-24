@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
+import values from "../const/const.js";
 
-const uriMongo =
-  "URI DADA POR EL LOCO TIANO Q ESTÁ EN LA NUBE";
-
-mongoose.connect(uriMongo, {}).catch((error) => console.log(error));
+mongoose.connect(values.URIMONGO, {}).catch((error) => console.log(error));
 
 const connection = mongoose.connection;
 
