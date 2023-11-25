@@ -42,6 +42,30 @@ noSqlCliente.updateEventoNoSQL = async (req, res) => {
   }
 };
 
+noSqlCliente.getEventoByIdNoSQL = async (req, res, next) => {
+  try {
+    const evento = await eventoModel.findById(req.params.id_evento);
+
+    if (!evento) {
+      return res.status(404).json({
+        success: true,
+        message: "No hay eventos en mongodb",
+        evento,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      evento,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
+
 noSqlCliente.getEventoNoSql = async (req, res) => {
   try {
     const evento = await eventoModel.find({}).exec();
@@ -61,6 +85,28 @@ noSqlCliente.getEventoNoSql = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
+
+noSqlCliente.deleteEventoNoSQL = async (req, res, next) => {
+  try {
+    const evento = await eventoModel.findByIdAndDelete(req.params.id_evento);
+    if (!evento) {
+      return res.status(404).json({
+        success: false,
+        message: "Evento no encontrado",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Evento eliminado con éxito",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
       success: false,
       error,
     });

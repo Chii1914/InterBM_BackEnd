@@ -67,9 +67,11 @@ const getEvento = async (req, res, next) => {
   }
 };
 
-
-
-const getEventoId = async (req, res) => {
+const getEventoId = async (req, res, next) => {
+  if (req.params.typebd == "mongo") {
+    next();
+    return;
+  }
   try {
     const connection = await createConnection();
     const evento = req.params;
@@ -125,7 +127,12 @@ const updateEvento = async (req, res, next) => {
   }
 };
 
-const deleteEvento = async (req, res) => {
+const deleteEvento = async (req, res, next) => {
+  if (req.params.typebd == "mongo") {
+    next();
+    return;
+  }
+
   try {
     const connection = await createConnection();
     const evento = req.params;
@@ -147,10 +154,4 @@ const deleteEvento = async (req, res) => {
   }
 };
 
-export {
-  crearEvento,
-  getEvento,
-  getEventoId,
-  updateEvento,
-  deleteEvento,
-};
+export { crearEvento, getEvento, getEventoId, updateEvento, deleteEvento };
