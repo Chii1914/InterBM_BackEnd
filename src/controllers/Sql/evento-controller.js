@@ -46,7 +46,8 @@ const crearEvento = async (req, res, next) => {
 
 const getEvento = async (req, res, next) => {
   if (req.params.typebd == "mongo") {
-    next()
+    next();
+    return;
   } else {
     try {
       const connection = await createConnection();
@@ -90,7 +91,11 @@ const getEventoId = async (req, res) => {
   }
 };
 
-const updateEvento = async (req, res) => {
+const updateEvento = async (req, res, next) => {
+  if (req.params.typebd == "mongo") {
+    next();
+    return;
+  }
   try {
     const connection = await createConnection();
     const evento = req.body;
