@@ -1,29 +1,20 @@
-import mysql2 from "mysql2/promise";
-import connectionConfig from "../../database/connection.js";
-import bcrypt from "bcryptjs";
+import "../../models/evento/nosql.js";
+const noSqlCliente = {};
+noSqlCliente.crearEvento = async (req, res, next) => {
+  try {
+    const evento = new Eventos(req.body);
+    await evento.save();
 
-/**
- * The function creates a connection to a MySQL database using the provided configuration.
- * @returns a promise that resolves to a MySQL connection object.
- */
-const createConnection = async () => {
-  return await mysql2.createConnection(connectionConfig);
+    res.status(200).json({
+      success: true,
+      message: "Cliente creado en mongodb",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error,
+    });
+  }
 };
 
-
-const getEventoNoSQL = async (req, res) => {
-  return res.status(200).json({
-    status: true,
-    message: "Este es un controlador de mongo",
-  });
-};
-//ENDPOINTS
-/*
-
-  LUCCIANO POST
-  STEPHANO GET Y DELETE
-  WEA PATCH
-*/
-export {
-  getEventoNoSQL,
-};
+export default noSqlCliente;
