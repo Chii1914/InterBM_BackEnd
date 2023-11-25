@@ -1,5 +1,6 @@
 import eventoModel from "../../models/evento/nosql.js";
 const noSqlCliente = {};
+
 noSqlCliente.crearEventoNoSQL = async (req, res, next) => {
   try {
     const evento = new eventoModel(req.body);
@@ -39,6 +40,31 @@ noSqlCliente.updateEventoNoSQL = async (req, res) => {
       error,
     });
   }
-}
+};
+
+noSqlCliente.getEventoNoSql = async (req, res) => {
+  try {
+    const evento = await eventoModel.find({}).exec();
+
+    if (evento.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Listando eventos en mongodb",
+        evento,
+      });
+    }
+
+    return res.status(404).json({
+      success: true,
+      message: "No hay eventos en mongodb",
+      evento,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
 
 export default noSqlCliente;
