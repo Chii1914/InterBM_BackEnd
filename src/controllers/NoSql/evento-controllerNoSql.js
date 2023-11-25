@@ -1,9 +1,8 @@
-import "../../models/evento/nosql.js";
+import eventoModel from "../../models/evento/nosql.js";
 const noSqlCliente = {};
-noSqlCliente.crearEventoNoSQL = async (req, res, next) => {
+noSqlCliente.crearEventoNoSQL = async (req, res) => {
   try {
-    console.log(req.body)
-    const evento = new Eventos(req.body);
+    const evento = new eventoModel(req.body);
     await evento.save();
 
     res.status(200).json({
@@ -11,6 +10,7 @@ noSqlCliente.crearEventoNoSQL = async (req, res, next) => {
       message: "Cliente creado en mongodb",
     });
   } catch (error) {
+    console.log("error")
     return res.status(500).json({
       success: false,
       error,

@@ -14,6 +14,7 @@ const crearEvento = async (req, res, next) => {
   const type = req.params;
   if (type.typebd == "mongo") {
     next();
+    return;
   }
   try {
     const connection = await createConnection();
