@@ -10,7 +10,7 @@ const createConnection = async () => {
   return await mysql2.createConnection(connectionConfig);
 };
 
-const crearEvento = async (req, res) => {
+const crearEvento = async (req, res, next) => {
   const type = req.params;
   if (type.typebd == "mongo") {
     next();

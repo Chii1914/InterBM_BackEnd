@@ -1,7 +1,8 @@
 import "../../models/evento/nosql.js";
 const noSqlCliente = {};
-noSqlCliente.crearEvento = async (req, res, next) => {
+noSqlCliente.crearEventoNoSQL = async (req, res, next) => {
   try {
+    console.log(req.body)
     const evento = new Eventos(req.body);
     await evento.save();
 

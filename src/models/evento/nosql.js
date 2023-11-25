@@ -30,7 +30,7 @@ const eventoSchema = new Schema(
     },
     horario: {
       type: Date,
-      required: true,
+      required: false,
       maxlength: 255,
     },
   },
