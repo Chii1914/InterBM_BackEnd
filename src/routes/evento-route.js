@@ -11,6 +11,8 @@ import noSqlCliente from "../controllers/NoSql/evento-controllerNoSql.js";
 const router = Router();
 //Siempre hay que anteponer "http://localhost:4000/evento/" y luego la ruta definida dependiendo de la accion crud.
 //SQL
+
+// ESQUEMA GENERAL /EVENTO/:TYPEBD/:ID_EVENTO
 router.route(`/evento/:typebd`).post(crearEvento, noSqlCliente.crearEventoNoSQL);
 router.route(`/evento/:typebd`).get(getEvento, noSqlCliente.getEventoNoSql);
 router.route(`/evento/:id_evento/:typebd`).get(getEventoId);
