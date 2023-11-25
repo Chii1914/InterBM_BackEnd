@@ -91,6 +91,10 @@ const getEventoId = async (req, res) => {
 };
 
 const updateEvento = async (req, res) => {
+  if (req.params.typebd == "mongo") {
+    next();
+    return;
+  }
   try {
     const connection = await createConnection();
     const evento = req.body;

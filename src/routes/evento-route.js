@@ -12,8 +12,8 @@ const router = Router();
 //SQL
 router.route(`/evento/:typebd`).post(crearEvento, noSqlCliente.crearEventoNoSQL);
 // router.route(`/evento/:typebd`).get(getEvento, getEventoNoSQL);
-router.route(`/evento/:id_evento/`).get(getEventoId);
-router.route(`/evento/:id_evento`).patch(updateEvento);
+router.route(`/evento/:id_evento/:typebd`).get(getEventoId);
+router.route(`/evento/:id_evento/:typebd`).patch(updateEvento, noSqlCliente.updateEventoNoSQL);
 router.route(`/evento/:id_evento`).delete(deleteEvento);
 
 export default router;
