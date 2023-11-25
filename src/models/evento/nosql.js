@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
-
 const eventoSchema = new Schema(
   {
     nombre: {
@@ -41,4 +40,4 @@ const eventoSchema = new Schema(
   }
 );
 
-export default model("Eventos", eventoSchema);
+export default model("eventos", eventoSchema);
