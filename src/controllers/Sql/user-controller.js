@@ -218,6 +218,25 @@ const verifyUser = async (req, res) => {
   }
 }
 
+const eliminarUsuario = async (req, res) => {
+  try {
+    const { RUN } = req.params;
+    const connection = await createConnection();
+    await connection.execute("DELETE FROM usuario WHERE RUN = ?", [RUN]);
+    await connection.end();
+    return res.status(200).json({
+      status: true,
+      message: "Usuario eliminado",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      error: "Problemas al eliminar el usuario",
+      code: error,
+    });
+  }
+};
+
 export {
   getUsers,
   crearUsuario,
@@ -227,4 +246,6 @@ export {
   getCategories,
   getVoucherByUser,
   verifyUser,
+  
+  eliminarUsuario,
 };

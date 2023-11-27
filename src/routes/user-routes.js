@@ -11,6 +11,9 @@ import {
   getCategories,
   getVoucherByUser,
   verifyUser,
+  
+  eliminarUsuario,
+
 } from "../controllers/Sql/user-controller.js";
 
 /* `const router = Router();` is creating a new router object using the `Router` class from the
@@ -25,5 +28,9 @@ router.route("/user/:RUN").delete(deleteUser);
 router.route("/usercat/:categorias").get(getCategories);
 router.route("/userver/").post(verifyUser);
 router.route("/uservoucher/").get(getVoucherByUser);
+
+router.route("/user/:RUN").delete(eliminarUsuario);  // Asegúrate de que esta ruta coincida con la función en tu controlador
+
+
 
 export default router;
