@@ -42,7 +42,6 @@ app.use(express.static(path.join(path.resolve(), value.STATIC_PATH)));
 import routerUser from "./routes/user-routes.js";
 import routerBoleta from "./routes/boleta-routes.js";
 import routerEvento from "./routes/evento-route.js";
-import routerEntrega from "./routes/entrega2-routes.js";
 
 /* `app.use('/user', routerUser)` is setting up a middleware for the Express.js application. It
 specifies that any requests with a URL starting with '/user' should be handled by the `routerUser`
@@ -50,6 +49,5 @@ router. */
 app.use("/", routerUser);
 app.use("/", routerBoleta);
 app.use("/", routerEvento);
-app.use("/", routerEntrega);
 
 export default app;
