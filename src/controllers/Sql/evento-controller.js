@@ -20,9 +20,9 @@ const crearEvento = async (req, res, next) => {
     const connection = await createConnection();
     const evento = req.body;
     await connection.execute(
-      "INSERT INTO evento (id_evento, descripcion, titulo, localizacion, organizador, fecha_hora) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO evento (_id, descripcion, titulo, localizacion, organizador, fecha_hora) VALUES (?, ?, ?, ?, ?, ?)",
       [
-        evento.id_evento,
+        evento._id,
         evento.descripcion,
         evento.titulo,
         evento.localizacion,
@@ -55,7 +55,7 @@ const getEvento = async (req, res, next) => {
       await connection.end();
       return res.status(200).json({
         success: true,
-        usuarios: rows,
+        evento: rows,
       });
     } catch (error) {
       return res.status(500).json({
@@ -76,7 +76,7 @@ const getEventoId = async (req, res, next) => {
     const connection = await createConnection();
     const evento = req.params;
     const [rows] = await connection.execute(
-      "SELECT * FROM evento WHERE id_evento = ?",
+      "SELECT * FROM evento WHERE _id = ?",
       [evento.id_evento]
     );
     await connection.end();
@@ -93,7 +93,7 @@ const getEventoId = async (req, res, next) => {
   }
 };
 
-const updateEvento = async (req, res, next) => {
+const updateEvento = async (req, res) => {
   if (req.params.typebd == "mongo") {
     next();
     return;
@@ -101,22 +101,41 @@ const updateEvento = async (req, res, next) => {
   try {
     const connection = await createConnection();
     const evento = req.body;
-    const id_evento = req.params;
-    await connection.execute(
-      "UPDATE evento SET descripcion = ?, titulo = ?, localizacion = ?, organizador = ?, fecha_hora = ? WHERE id_evento = ?",
+    const id_evento = req.params.id_evento;
+
+    // Perform the update
+    const [updateResult] = await connection.execute(
+      "UPDATE evento SET descripcion = ?, titulo = ?, localizacion = ?, organizador = ?, fecha_hora = ? WHERE _id = ?",
       [
         evento.descripcion,
         evento.titulo,
         evento.localizacion,
         evento.organizador,
         evento.fecha_hora,
-        id_evento.id_evento,
+        id_evento
       ]
     );
+
+    // Check if any row was updated
+    if (updateResult.affectedRows === 0) {
+      await connection.end();
+      return res.status(404).json({
+        status: false,
+        message: "Evento no encontrado o no modificado",
+      });
+    }
+
+    // Fetch the updated row
+    const [updatedRows] = await connection.execute(
+      "SELECT * FROM evento WHERE _id = ?",
+      [id_evento]
+    );
+
     await connection.end();
     return res.status(200).json({
       status: true,
       message: "El evento fue actualizado",
+      evento: updatedRows[0], // Return the first (and should be only) updated row
     });
   } catch (error) {
     return res.status(500).json({
@@ -126,6 +145,7 @@ const updateEvento = async (req, res, next) => {
     });
   }
 };
+
 
 const deleteEvento = async (req, res, next) => {
   if (req.params.typebd == "mongo") {

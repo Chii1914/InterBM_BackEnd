@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 const eventoSchema = new Schema(
   {
-    nombre: {
+    localizacion: {
       type: String,
       required: true, // Equivalente a allowNull: false en Sequelize
       maxlength: 255,
