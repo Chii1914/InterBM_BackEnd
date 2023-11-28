@@ -1,7 +1,6 @@
 /* The code is creating a router object using the `Router` class from the `express` module. It then
 defines two routes: */
 import { Router } from "express";
-
 import {
   crearUsuario,
   deleteUser,
@@ -9,7 +8,6 @@ import {
   getUsers,
   updateRun,
   getCategories,
-  getVoucherByUser,
   verifyUser,
 } from "../controllers/Sql/user-controller.js";
 
@@ -24,6 +22,5 @@ router.route("/user/:RUN").patch(updateRun);
 router.route("/user/:RUN").delete(deleteUser);
 router.route("/usercat/:categorias").get(getCategories);
 router.route("/userver/").post(verifyUser);
-router.route("/uservoucher/").get(getVoucherByUser);
 
 export default router;

@@ -12,33 +12,57 @@ const createConnection = async () => {
 
 //REUNIR POR MIDDLEWARE USUARIO Y CUENTA
 const crearUsuario = async (req, res) => {
+  let connection;
+
   try {
-    const connection = await createConnection();
-    const usuario = req.body;
+    connection = await createConnection();
+    const {
+      run,
+      direccion_completa,
+      telefono_emergencia,
+      nombre_completo,
+      rol,
+      categoria,
+      telefono,
+      password,
+    } = req.body;
+
+    if (!run) {
+      return res.status(400).json({
+        status: false,
+        error: "El campo 'run' es obligatorio",
+      });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     await connection.execute(
-      "INSERT INTO usuario (RUN, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO usuario (run, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        usuario.run,
-        usuario.password,
-        usuario.direccion_completa,
-        usuario.telefono_emergencia,
-        usuario.nombre_completo,
-        usuario.rol,
-        usuario.categoria,
-        usuario.telefono,
+
+        run,
+        hashedPassword,
+        direccion_completa,
+        telefono_emergencia,
+        nombre_completo,
+        rol,
+        categoria,
+        telefono,
       ]
     );
+
     await connection.end();
     return res.status(200).json({
       status: true,
       message: "Usuario creado",
-      usuario,
     });
   } catch (error) {
+    if (connection) await connection.end();
+    console.error(error);
     return res.status(500).json({
       status: false,
-      error: "Problemas al crear el usuario o usuario ya está registrado",
-      code: error,
+      error: "Error al crear el usuario",
+      detalle: error.message,
     });
   }
 };
@@ -160,37 +184,16 @@ const getCategories = async (req, res) => {
   }
 };
 
-const getVoucherByUser = async (req, res) => {
-  try {
-    const connection = await createConnection();
-    const usuario = req.params;
-    const [rows] = await connection.execute(
-      "SELECT usuario.*, boleta.* FROM usuario INNER JOIN realizar_pago ON usuario.run = realizar_pago.run INNER JOIN boleta ON realizar_pago.id_boleta = boleta.id_boleta;"
-    );
-    await connection.end();
-    return res.status(200).json({
-      status: true,
-      usuarios: rows,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: false,
-      error: "Problemas al visualizar usuario o no existe",
-      code: error,
-    });
-  }
-};
-
 const verifyUser = async (req, res) => {
   try {
     const user = req.body;
-    console.log(user)
+    console.log(user);
     const connection = await createConnection();
     const [rows] = await connection.execute(
       "SELECT password FROM usuario WHERE RUN = ?",
       [user.RUN]
     );
-    if(rows.length === 0){
+    if (rows.length === 0) {
       return res.status(200).json({
         status: false,
         message: "Usuario no existente",
@@ -203,7 +206,7 @@ const verifyUser = async (req, res) => {
         status: true,
       });
     }
-    
+
     return res.status(200).json({
       status: false,
       message: "Contraseña incorrecta",
@@ -215,7 +218,7 @@ const verifyUser = async (req, res) => {
       code: error,
     });
   }
-}
+};
 
 export {
   getUsers,
@@ -224,6 +227,5 @@ export {
   updateRun,
   deleteUser,
   getCategories,
-  getVoucherByUser,
   verifyUser,
 };
