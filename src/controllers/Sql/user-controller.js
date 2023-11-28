@@ -39,6 +39,7 @@ const crearUsuario = async (req, res) => {
     await connection.execute(
       "INSERT INTO usuario (run, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
+
         run,
         hashedPassword,
         direccion_completa,
