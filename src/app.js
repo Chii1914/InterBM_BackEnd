@@ -16,7 +16,7 @@ to be requested from another domain outside the domain from which the resource o
 const corsOptions = {
   credentiasl: true,
   optionSuccessStatus: 200,
-  methods: "GET, PUT, POST, DELETE",
+  methods: "GET, PUT, POST, DELETE, PATCH",
   origin: "*",
 };
 
