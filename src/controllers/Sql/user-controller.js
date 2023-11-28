@@ -16,16 +16,7 @@ const crearUsuario = async (req, res) => {
 
   try {
     connection = await createConnection();
-    const {
-      run,
-      direccion_completa,
-      telefono_emergencia,
-      nombre_completo,
-      rol,
-      categoria,
-      telefono,
-      password,
-    } = req.body;
+    const { run, nombre_completo, categoria } = req.body;
 
     if (!run) {
       return res.status(400).json({
@@ -34,31 +25,21 @@ const crearUsuario = async (req, res) => {
       });
     }
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
     await connection.execute(
-      "INSERT INTO usuario (run, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [
-
-        run,
-        hashedPassword,
-        direccion_completa,
-        telefono_emergencia,
-        nombre_completo,
-        rol,
-        categoria,
-        telefono,
-      ]
+      "INSERT INTO usuario (run, nombre_completo, categoria) VALUES (?, ?, ?)",
+      [run, nombre_completo, categoria]
     );
-
+    const usuario = { run, nombre_completo, categoria };
     await connection.end();
     return res.status(200).json({
       status: true,
       message: "Usuario creado",
+      usuario,
     });
   } catch (error) {
-    if (connection) await connection.end();
     console.error(error);
+
+    if (connection) await connection.end();
     return res.status(500).json({
       status: false,
       error: "Error al crear el usuario",
@@ -110,29 +91,20 @@ const getUserRun = async (req, res) => {
 const updateRun = async (req, res) => {
   try {
     const connection = await createConnection();
-    const usuario = req.body;
-    const RUN = req.params;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(usuario.password, saltRounds);
+    const usuarior = req.body;
+    const run = req.params;
     await connection.execute(
-      "UPDATE usuario SET direccion_completa = ?, telefono_emergencia = ?, nombre_completo = ?, rol = ?, categoria = ?, telefono = ?, password = ? WHERE RUN = ?",
-      [
-        usuario.direccion_completa,
-        usuario.telefono_emergencia,
-        usuario.nombre_completo,
-        usuario.rol,
-        usuario.categoria,
-        usuario.telefono,
-        hashedPassword,
-        RUN.RUN,
-      ]
+      "UPDATE usuario SET nombre_completo = ?, categoria = ? WHERE RUN = ?",
+      [usuarior.nombre_completo, usuarior.categoria, run.RUN]
     );
     await connection.end();
     return res.status(200).json({
       status: true,
       message: "El usuario fue actualizado",
+      usuarior,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: false,
       error: "Problemas al actualizar el usuario o no existe",
