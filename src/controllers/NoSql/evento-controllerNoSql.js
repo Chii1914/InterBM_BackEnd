@@ -9,6 +9,7 @@ noSqlCliente.crearEventoNoSQL = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Cliente creado en mongodb",
+      evento,
     });
   } catch (error) {
     console.log("error");

@@ -15,13 +15,11 @@ const crearUsuario = async (req, res) => {
   try {
     const connection = await createConnection();
     const usuario = req.body;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(usuario.password, saltRounds);
     await connection.execute(
       "INSERT INTO usuario (RUN, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
         usuario.RUN,
-        hashedPassword,
+        usuario.password,
         usuario.direccion_completa,
         usuario.telefono_emergencia,
         usuario.nombre_completo,
@@ -34,6 +32,7 @@ const crearUsuario = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Usuario creado",
+      usuario,
     });
   } catch (error) {
     return res.status(500).json({
