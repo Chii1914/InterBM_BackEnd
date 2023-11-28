@@ -18,7 +18,7 @@ const crearUsuario = async (req, res) => {
     await connection.execute(
       "INSERT INTO usuario (RUN, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        usuario.RUN,
+        usuario.run,
         usuario.password,
         usuario.direccion_completa,
         usuario.telefono_emergencia,
