@@ -12,7 +12,7 @@ const createConnection = async () => {
   }
 };
 let connection;
-
+// Controladores de boleta
 const generateVoucher = async (req, res) => {
   try {
     const boleta = req.body;
@@ -133,6 +133,28 @@ const deleteVoucher = async (req, res) => {
   }
 };
 
+//Controladores
+
+const getAllVoucherByUser = async (req, res) => {
+  try {
+    const connection = await createConnection();
+    const usuario = req.params;
+    const [rows] = await connection.execute(
+      "SELECT usuario.*, boleta.* FROM usuario INNER JOIN realizar_pago ON usuario.run = realizar_pago.run INNER JOIN boleta ON realizar_pago.id_boleta = boleta.id_boleta;"
+    );
+    await connection.end();
+    return res.status(200).json({
+      status: true,
+      usuarios: rows,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      error: "Problemas al visualizar usuario o no existe",
+      code: error,
+    });
+  }
+};
 const getVoucherByRun = async (req, res) => {
   try {
     const connection = await createConnection();
@@ -151,6 +173,81 @@ const getVoucherByRun = async (req, res) => {
       status: false,
       error: "Problemas al visualizar usuario o no existe",
       code: error,
+    });
+  }
+};
+const createUserData = async (req, res) => {
+  let connection;
+
+  try {
+    connection = await createConnection();
+    await connection.beginTransaction(); // Inicia una transacción
+
+    // Verifica si los datos necesarios están presentes
+    const { id_boleta, monto, fecha, run, nombre_completo, categoria } =
+      req.body;
+    if (
+      !run ||
+      !id_boleta ||
+      !monto ||
+      !fecha ||
+      !nombre_completo ||
+      !categoria
+    ) {
+      return res.status(400).json({
+        status: false,
+        error: "Faltan campos necesarios en los datos proporcionados",
+      });
+    }
+
+    // Verificación adicional de campos específicos
+    if (
+      !run ||
+      !id_boleta ||
+      !monto ||
+      !fecha ||
+      !nombre_completo ||
+      !categoria
+    ) {
+      return res.status(400).json({
+        status: false,
+        error: "Faltan campos necesarios en los datos proporcionados",
+      });
+    }
+    // Insertar datos en la tabla boleta
+    await connection.execute(
+      "INSERT INTO boleta (id_boleta, monto, fecha) VALUES (?,?,?)",
+      [id_boleta, monto, fecha]
+    );
+    // Insertar datos en la tabla usuario
+    await connection.execute(
+      "INSERT INTO usuario (run, nombre_completo, categoria) VALUES (?,?,?)",
+      [run, nombre_completo, categoria]
+    );
+
+    // Insertar datos en la tabla realizar_pago
+    await connection.execute(
+      "INSERT INTO realizar_pago (run, id_boleta) VALUES (?,?)",
+      [run, id_boleta]
+    );
+
+    await connection.commit(); // Finaliza la transacción
+    await connection.end();
+
+    return res.status(200).json({
+      status: true,
+      message: "Datos creados con éxito",
+    });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback(); // Deshace la transacción en caso de error
+      await connection.end();
+    }
+    console.error(error);
+    return res.status(500).json({
+      status: false,
+      error: "Error al crear los datos",
+      detalle: error.message,
     });
   }
 };
@@ -271,54 +368,6 @@ const deleteUserData = async (req, res) => {
     });
   }
 };
-const createUserData = async (req, res) => {
-  try {
-    const usuario = req.body;
-    const boleta = req.body;
-    if (!usuario) {
-      return res.status(400).json({
-        status: false,
-        error: "Datos de usuario faltantes",
-      });
-    }
-
-    const connection = await createConnection();
-
-    await connection.beginTransaction();
-    const [usuarioResult] = await connection.execute(
-      "INSERT INTO usuario (RUN) VALUES (?)",
-      [usuario.RUN]
-    );
-    // Insertar un nuevo registro en la tabla 'boleta'
-
-    // Confirma la transacción
-    await connection.commit();
-
-    return res.status(201).json({
-      success: true,
-      message: "Usuario y datos relacionados creados correctamente",
-      usuario: usuarioResult,
-      boleta: boletaResult,
-    });
-  } catch (error) {
-    console.log(error);
-    // En caso de error, revierte la transacción
-    if (connection) {
-      await connection.rollback();
-    }
-
-    return res.status(500).json({
-      success: false,
-      error: "Problemas al crear el usuario y los datos relacionados",
-      code: error,
-    });
-  } finally {
-    // Asegúrate de cerrar la conexión después de la transacción
-    if (connection) {
-      await connection.end();
-    }
-  }
-};
 
 export {
   generateVoucher,
@@ -330,4 +379,5 @@ export {
   updateVoucherByUser,
   deleteUserData,
   createUserData,
+  getAllVoucherByUser,
 };

@@ -12,33 +12,56 @@ const createConnection = async () => {
 
 //REUNIR POR MIDDLEWARE USUARIO Y CUENTA
 const crearUsuario = async (req, res) => {
+  let connection;
+
   try {
-    const connection = await createConnection();
-    const usuario = req.body;
+    connection = await createConnection();
+    const {
+      run,
+      direccion_completa,
+      telefono_emergencia,
+      nombre_completo,
+      rol,
+      categoria,
+      telefono,
+      password,
+    } = req.body;
+
+    if (!run) {
+      return res.status(400).json({
+        status: false,
+        error: "El campo 'run' es obligatorio",
+      });
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     await connection.execute(
-      "INSERT INTO usuario (RUN, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO usuario (run, password, direccion_completa, telefono_emergencia, nombre_completo, rol, categoria, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        usuario.RUN,
-        usuario.password,
-        usuario.direccion_completa,
-        usuario.telefono_emergencia,
-        usuario.nombre_completo,
-        usuario.rol,
-        usuario.categoria,
-        usuario.telefono,
+        run,
+        hashedPassword,
+        direccion_completa,
+        telefono_emergencia,
+        nombre_completo,
+        rol,
+        categoria,
+        telefono,
       ]
     );
+
     await connection.end();
     return res.status(200).json({
       status: true,
       message: "Usuario creado",
-      usuario,
     });
   } catch (error) {
+    if (connection) await connection.end();
+    console.error(error);
     return res.status(500).json({
       status: false,
-      error: "Problemas al crear el usuario o usuario ya está registrado",
-      code: error,
+      error: "Error al crear el usuario",
+      detalle: error.message,
     });
   }
 };
