@@ -34,6 +34,7 @@ const crearEvento = async (req, res, next) => {
     return res.status(200).json({
       status: true,
       message: "Evento creado",
+      evento: evento,
     });
   } catch (error) {
     return res.status(500).json({
@@ -93,7 +94,7 @@ const getEventoId = async (req, res, next) => {
   }
 };
 
-const updateEvento = async (req, res) => {
+const updateEvento = async (req, res, next) => {
   if (req.params.typebd == "mongo") {
     next();
     return;
@@ -157,7 +158,7 @@ const deleteEvento = async (req, res, next) => {
     const connection = await createConnection();
     const evento = req.params;
     const { id_evento } = evento;
-    await connection.execute("DELETE FROM evento WHERE id_evento = ?", [
+    await connection.execute("DELETE FROM evento WHERE _id = ?", [
       id_evento,
     ]);
     await connection.end();
